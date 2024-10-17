@@ -67,6 +67,7 @@
             background-color: var(--white);
             color: var(--black);
             transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
         }
 
         select:focus, input[type="number"]:focus {
@@ -107,20 +108,53 @@
             font-weight: 500;
         }
 
-        .explanation {
-            margin-top: 32px;
-            padding: 20px;
-            background-color: var(--light-blue);
-            color: var(--black);
-            border-radius: 12px;
+        .dropdown {
+            margin-top: 20px;
+            border-top: 1px solid var(--light-blue);
+            padding-top: 20px;
         }
 
-        .explanation h3 {
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-blue);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            width: auto;
+        }
+
+        .dropdown-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .dropdown-toggle .material-icons {
+            margin-left: 8px;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-content {
+            display: none;
+            padding: 16px;
+            background-color: var(--light-blue);
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content h3 {
             margin-top: 0;
             color: var(--primary-blue);
         }
 
-        .explanation ul, .explanation ol {
+        .dropdown-content ul, .dropdown-content ol {
             padding-left: 20px;
         }
 
@@ -163,30 +197,43 @@
             <button onclick="calculateRecoveryTime()">Calculate Recovery Time</button>
             <div id="result" style="display: none;"></div>
 
-            <div class="explanation">
-                <h3>Recovery Exercises</h3>
-                <p>To help with your recovery, consider the following exercises:</p>
-                <ul>
-                    <li>Light jogging or brisk walking for 10-15 minutes</li>
-                    <li>Dynamic stretching focusing on legs, arms, and core</li>
-                    <li>Foam rolling to release muscle tension</li>
-                    <li>Yoga or gentle stretching</li>
-                    <li>Swimming or water aerobics for low-impact movement</li>
-                </ul>
-                <p>Remember to stay hydrated and get adequate sleep to support your recovery.</p>
-
-                <h3>Calculation Explanation</h3>
-                <p>The recovery time is calculated based on three main factors:</p>
-                <ol>
-                    <li><strong>Base Time:</strong> 6 hours for matches, 3 hours for training sessions.</li>
-                    <li><strong>Intensity Factor:</strong> Light (0.8x), Moderate (1x), High (1.2x), Extreme (1.5x)</li>
-                    <li><strong>Duration Factor:</strong> (Activity duration in hours), capped at 3x</li>
-                </ol>
-                <p>The formula is: Recovery Time = Base Time × Intensity Factor × Duration Factor</p>
-                <p>This calculation provides a general guideline. Always listen to your body and consult with a coach or sports physician for personalized advice.</p>
+            <div class="dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown('recoveryExercises')">
+                    Recovery Exercises
+                    <span class="material-icons">expand_more</span>
+                </button>
+                <div id="recoveryExercises" class="dropdown-content">
+                    <p>To help with your recovery, consider the following exercises:</p>
+                    <ul>
+                        <li>Light jogging or brisk walking for 10-15 minutes</li>
+                        <li>Dynamic stretching focusing on legs, arms, and core</li>
+                        <li>Foam rolling to release muscle tension</li>
+                        <li>Yoga or gentle stretching</li>
+                        <li>Swimming or water aerobics for low-impact movement</li>
+                    </ul>
+                    <p>Remember to stay hydrated and get adequate sleep to support your recovery.</p>
+                </div>
             </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown('calculationExplanation')">
+                    Calculation Explanation
+                    <span class="material-icons">expand_more</span>
+                </button>
+                <div id="calculationExplanation" class="dropdown-content">
+                    <p>The recovery time is calculated based on three main factors:</p>
+                    <ol>
+                        <li><strong>Base Time:</strong> 6 hours for matches, 3 hours for training sessions.</li>
+                        <li><strong>Intensity Factor:</strong> Light (0.8x), Moderate (1x), High (1.2x), Extreme (1.5x)</li>
+                        <li><strong>Duration Factor:</strong> (Activity duration in hours), capped at 3x</li>
+                    </ol>
+                    <p>The formula is: Recovery Time = Base Time × Intensity Factor × Duration Factor</p>
+                    <p>This calculation provides a general guideline. Always listen to your body and consult with a coach or sports physician for personalized advice.</p>
+                </div>
+            </div>
+
             <div class="attribution">
-                Inspired by the work of Dagmara Baskova in tennis recovery research.
+                Inspired by Dagmara Baskova, Ex WTA player and High Performance Tennis Coach.
             </div>
         </div>
     </div>
@@ -222,6 +269,13 @@
                 <p>${baseTime} × ${intensityFactor[intensity]} × ${durationFactor.toFixed(2)} = ${recoveryTime} hours</p>
             `;
             resultElement.style.display = 'block';
+        }
+
+        function toggleDropdown(id) {
+            const content = document.getElementById(id);
+            const icon = content.previousElementSibling.querySelector('.material-icons');
+            content.classList.toggle('show');
+            icon.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
     </script>
 </body>
